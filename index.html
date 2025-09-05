@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zenvibe</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #cce7ff, #e0ccff);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    min-height: 150vh;
+    width: 100%;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 60px;
+    font-size: 2.2rem;
+    z-index: 2;
+  }
+
+  #breathCircle {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.8), rgba(200,230,255,0.6));
+    box-shadow: 0 0 30px rgba(200,230,255,0.5);
+    margin-bottom: 30px;
+    z-index: 2;
+    animation: breathe 4s ease-in-out infinite;
+  }
+
+  @keyframes breathe {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+    100% { transform: scale(1); }
+  }
+
+  button {
+    padding: 12px 25px;
+    font-size: 16px;
+    background-color: #7fcd91;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 18px;
+    z-index: 2;
+  }
+  button:hover { 
+    background-color: #66b87f; 
+    transform: translateY(-2px); 
+  }
+
+  .motivacao {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #333;
+    text-align: center;
+    font-style: italic;
+    line-height: 1.6;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    z-index: 2;
+  }
+
+  #topico {
+    width: 80%;
+    max-width: 800px;
+    margin-top: 30px;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #333;
+    line-height: 1.6;
+  }
+
+  #texto {
+    width: 80%;
+    max-width: 800px;
+    margin-top: 15px;
+    text-align: left;
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.5;
+  }
+
+  #texto p {
+    margin-bottom: 10px;
+  }
+
+  .bubble {
+    position: absolute;
+    bottom: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.7);
+    opacity: 0.7;
+    z-index: 0;
+    pointer-events: none;
+    animation: rise linear infinite;
+  }
+
+  @keyframes rise {
+    0% { transform: translateY(0); opacity: 0.7; }
+    100% { transform: translateY(-150vh); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Bem-vindo ao Zenvibe</h1>
+
+<div id="breathCircle">Inspire</div>
+
+<button onclick="toggleAudio()">Música Relaxante</button>
+<audio id="trabalho" loop>
+  <source src="trabalho.mp3" type="audio/mpeg">
+  Seu navegador não suporta áudio.
+</audio>
+
+<div class="motivacao" id="motivacao">"Respire fundo e sinta o momento presente."</div>
+<button onclick="novaFrase()">Nova frase</button>
+
+<div id="topico">Como relaxar</div>
+
+<div id="texto">
+  <p>As síndromes ansiosas podem ser categorizadas em dois grupos: aqueles em que a ansiedade é constante e permanente e aqueles quadros em que há crises de ansiedade abruptas e, por diversas vezes, intensas.</p>
+  <p>A crise de pânico serve de exemplo, pois nela ocorre um pico de ansiedade em que há descarga do sistema nervoso autônomo, por isso que os sintomas muitas vezes são de taquicardia, suor frio, tremores, desconforto respiratório etc.</p>
+  <p>Pois bem, um truque que alguns profissionais orientam que pode acalmar os pensamentos é a chamada técnica do 5, 4, 3, 2, 1.</p>
+  <p><strong style="font-size: 2rem;">5:</strong> coisas que podem ser vistas. Por exemplo: uma janela, um tapete, uma lâmpada etc.</p>
+  <p><strong style="font-size: 2rem;">4:</strong> coisas que podem ser tocadas. Ex: a cadeira que você esteja sentado, uma pessoa que está ao lado, o chão em que se está pisando.</p>
+  <p><strong style="font-size: 2rem;">3:</strong> coisas que podem ser ouvidas. Ex: uma música distante, o barulho do ar condicionado, alguém conversando.</p>
+  <p><strong style="font-size: 2rem;">2:</strong> coisas que se pode sentir o cheiro. Ex: o perfume de alguém ou do ambiente, o cheiro de uma comida etc.</p>
+  <p><strong style="font-size: 2rem;">1:</strong> coisa que se pode sentir o sabor. Algo que esteja perto que você pode imaginar o sabor, por exemplo.</p>
+  <p>Essa técnica permite se distrair dos sintomas, trabalhando a concentração e o tempo presente. Na crise de pânico ou quando se está muito ansioso é comum que se dê muita atenção ao próprio corpo e aos sintomas presentes. Com esta técnica o foco muda do corpo para o ambiente e os sintomas tendem a diminuir.</p>
+</div>
+
+<script>
+  // Música
+  const audio = document.getElementById('trabalho');
+  function toggleAudio() {
+    if (audio.paused) audio.play();
+    else audio.pause();
+  }
+
+  // Respiração
+  const circle = document.getElementById('breathCircle');
+  function toggleBreath() {
+    circle.textContent = "Inspire";
+    setTimeout(() => circle.textContent = "Expire", 2000);
+  }
+  toggleBreath();
+  setInterval(toggleBreath, 4000);
+
+  // Frases motivacionais
+  const frases = [
+    "Respire fundo e sinta o momento presente.",
+    "Cada respiração é um passo para a calma.",
+    "A calma está dentro de você.",
+    "Permita-se desacelerar e relaxar.",
+    "Você merece este momento de paz.",
+    "Sinta a leveza a cada expiração.",
+    "Seja gentil consigo mesmo agora.",
+    "Liberte sua mente e relaxe."
+  ];
+
+  function novaFrase() {
+    const motivacao = document.getElementById('motivacao');
+    motivacao.style.opacity = 0;
+    setTimeout(() => {
+      motivacao.textContent = `"${frases[Math.floor(Math.random() * frases.length)]}"`;
+      motivacao.style.opacity = 1;
+    }, 400);
+  }
+
+  // Bolhas subindo
+  const numBubbles = 30;
+  for (let i = 0; i < numBubbles; i++) {
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    const size = 10 + Math.random() * 25;
+    bubble.style.width = `${size}px`;
+    bubble.style.height = `${size}px`;
+    bubble.style.left = `${Math.random() * window.innerWidth}px`;
+    bubble.style.animationDuration = `${10 + Math.random() * 15}s`;
+    bubble.style.animationDelay = `${Math.random() * 10}s`;
+    document.body.appendChild(bubble);
+  }
+</script>
+
+</body>
+</html>
