@@ -51,7 +51,7 @@
   button {
     padding: 12px 25px;
     font-size: 16px;
-    background-color: #7fcd91;
+    background: linear-gradient(135deg, #7a5cff, #8f9bff);
     color: white;
     border: none;
     border-radius: 8px;
@@ -59,9 +59,10 @@
     transition: 0.3s;
     margin: 18px;
     z-index: 2;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   }
   button:hover { 
-    background-color: #66b87f; 
+    background: linear-gradient(135deg, #6950d8, #7b86e5);
     transform: translateY(-2px); 
   }
 
@@ -128,7 +129,6 @@
 <button onclick="toggleAudio()">Música Relaxante</button>
 <audio id="trabalho" loop>
   <source src="trabalho.mp3" type="audio/mpeg">
-  Seu navegador não suporta áudio.
 </audio>
 
 <div class="motivacao" id="motivacao">"Respire fundo e sinta o momento presente."</div>
@@ -149,14 +149,12 @@
 </div>
 
 <script>
-  // Música
   const audio = document.getElementById('trabalho');
   function toggleAudio() {
     if (audio.paused) audio.play();
     else audio.pause();
   }
 
-  // Respiração
   const circle = document.getElementById('breathCircle');
   function toggleBreath() {
     circle.textContent = "Inspire";
@@ -165,7 +163,6 @@
   toggleBreath();
   setInterval(toggleBreath, 4000);
 
-  // Frases motivacionais
   const frases = [
     "Respire fundo e sinta o momento presente.",
     "Cada respiração é um passo para a calma.",
@@ -186,7 +183,6 @@
     }, 400);
   }
 
-  // Bolhas subindo
   const numBubbles = 30;
   for (let i = 0; i < numBubbles; i++) {
     const bubble = document.createElement('div');
