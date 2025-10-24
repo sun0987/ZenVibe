@@ -98,15 +98,13 @@ function criarMensagem(texto, tipo) {
 async function verificarServidor() {
   try {
     const resposta = await fetch("https://c-rebro-do-zenvibes.onrender.com/ping");
-    if (resposta.ok) console.log("Servidor online ✅");
-    else console.warn("Servidor respondeu com erro ⚠️");
+    console.log("Ping servidor:", resposta.ok ? "online ✅" : "erro ⚠️");
   } catch (erro) {
     console.error("Não foi possível conectar ao servidor ❌", erro);
   }
 }
-
-verificarServidor();
 setInterval(verificarServidor, 60000);
+verificarServidor();
 
 async function enviarMensagem() {
   const mensagem = inputUsuario.value.trim();
@@ -123,15 +121,15 @@ async function enviarMensagem() {
     });
 
     if (!resposta.ok) {
-      const erroData = await resposta.json().catch(() => ({}));
-      throw new Error(erroData.error || "Erro na resposta do servidor");
+      const erroJson = await resposta.json();
+      throw new Error(erroJson.error || "Erro na resposta do servidor");
     }
 
     const data = await resposta.json();
     criarMensagem(data.reply || "Sem resposta da IA.", 'ia');
   } catch (erro) {
     criarMensagem("Erro ao conectar com a IA.", 'ia');
-    console.error(erro);
+    console.error("Erro enviarMensagem:", erro);
   }
 }
 
