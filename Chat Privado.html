@@ -102,6 +102,22 @@ function criarMensagem(texto, tipo) {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
+async function verificarServidor() {
+  try {
+    const resposta = await fetch("https://c-rebro-do-zenvibes.onrender.com/ping");
+    if (resposta.ok) {
+      console.log("Servidor online ✅");
+    } else {
+      console.warn("Servidor respondeu com erro ⚠️");
+    }
+  } catch (erro) {
+    console.error("Não foi possível conectar ao servidor ❌", erro);
+  }
+}
+
+setInterval(verificarServidor, 60000);
+verificarServidor();
+
 async function enviarMensagem() {
   const mensagem = inputUsuario.value.trim();
   if (!mensagem) return;
@@ -110,7 +126,6 @@ async function enviarMensagem() {
   inputUsuario.value = '';
 
   try {
-    // Conecta com o seu servidor Node.js no Render
     const resposta = await fetch("https://c-rebro-do-zenvibes.onrender.com/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -118,7 +133,7 @@ async function enviarMensagem() {
     });
 
     const data = await resposta.json();
-    criarMensagem(data.reply, 'ia'); // Exibe a resposta da IA
+    criarMensagem(data.reply, 'ia');
   } catch (erro) {
     criarMensagem("Erro ao conectar com a IA.", 'ia');
     console.error(erro);
