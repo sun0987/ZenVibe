@@ -90,43 +90,45 @@
 </div>
 
 <script>
-  const chatContainer = document.getElementById('chatContainer');
-  const inputUsuario = document.getElementById('inputUsuario');
-  const enviarBtn = document.getElementById('enviarBtn');
+const chatContainer = document.getElementById('chatContainer');
+const inputUsuario = document.getElementById('inputUsuario');
+const enviarBtn = document.getElementById('enviarBtn');
 
-  function criarMensagem(texto, tipo) {
-    const div = document.createElement('div');
-    div.classList.add('mensagem', tipo);
-    div.textContent = texto;
-    chatContainer.appendChild(div);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
+function criarMensagem(texto, tipo) {
+  const div = document.createElement('div');
+  div.classList.add('mensagem', tipo);
+  div.textContent = texto;
+  chatContainer.appendChild(div);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+async function enviarMensagem() {
+  const mensagem = inputUsuario.value.trim();
+  if (!mensagem) return;
+
+  criarMensagem(mensagem, 'usuario');
+  inputUsuario.value = '';
+
+  try {
+    // Conecta com o seu servidor Node.js no Render
+    const resposta = await fetch("https://c-rebro-do-zenvibes.onrender.com/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: mensagem })
+    });
+
+    const data = await resposta.json();
+    criarMensagem(data.reply, 'ia'); // Exibe a resposta da IA
+  } catch (erro) {
+    criarMensagem("Erro ao conectar com a IA.", 'ia');
+    console.error(erro);
   }
+}
 
-  async function enviarMensagem() {
-    const mensagem = inputUsuario.value.trim();
-    if (!mensagem) return;
-
-    criarMensagem(mensagem, 'usuario');
-    inputUsuario.value = '';
-
-    try {
-      const resposta = await fetch("https://c-rebro-do-zenvibes.onrender.com/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: mensagem })
-      });
-      const data = await resposta.json();
-      criarMensagem(data.reply, 'ia');
-    } catch (erro) {
-      criarMensagem("Erro ao conectar com a IA.", 'ia');
-      console.error(erro);
-    }
-  }
-
-  enviarBtn.addEventListener('click', enviarMensagem);
-  inputUsuario.addEventListener('keypress', function(e) {
-    if (e.key === "Enter") enviarMensagem();
-  });
+enviarBtn.addEventListener('click', enviarMensagem);
+inputUsuario.addEventListener('keypress', function(e) {
+  if (e.key === "Enter") enviarMensagem();
+});
 </script>
 
 </body>
