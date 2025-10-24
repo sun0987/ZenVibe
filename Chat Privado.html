@@ -102,6 +102,7 @@ function criarMensagem(texto, tipo) {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
+// PING para manter o servidor acordado
 async function verificarServidor() {
   try {
     const resposta = await fetch("https://c-rebro-do-zenvibes.onrender.com/ping");
@@ -115,6 +116,7 @@ async function verificarServidor() {
   }
 }
 
+// Checa a cada 60 segundos
 setInterval(verificarServidor, 60000);
 verificarServidor();
 
@@ -129,11 +131,13 @@ async function enviarMensagem() {
     const resposta = await fetch("https://c-rebro-do-zenvibes.onrender.com/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: mensagem })
+      body: JSON.stringify({ message: mensagem }) // bate com server.js
     });
 
+    if (!resposta.ok) throw new Error("Erro na resposta do servidor");
+
     const data = await resposta.json();
-    criarMensagem(data.reply, 'ia');
+    criarMensagem(data.reply || "Sem resposta da IA.", 'ia');
   } catch (erro) {
     criarMensagem("Erro ao conectar com a IA.", 'ia');
     console.error(erro);
@@ -141,7 +145,7 @@ async function enviarMensagem() {
 }
 
 enviarBtn.addEventListener('click', enviarMensagem);
-inputUsuario.addEventListener('keypress', function(e) {
+inputUsuario.addEventListener('keypress', e => {
   if (e.key === "Enter") enviarMensagem();
 });
 </script>
