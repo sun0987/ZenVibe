@@ -95,7 +95,6 @@ function criarMensagem(texto, tipo) {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-// Ping para manter o servidor acordado
 async function verificarServidor() {
   try {
     const resposta = await fetch("https://c-rebro-do-zenvibes.onrender.com/ping");
@@ -106,7 +105,6 @@ async function verificarServidor() {
   }
 }
 
-// Verifica imediatamente e depois a cada 60s
 verificarServidor();
 setInterval(verificarServidor, 60000);
 
