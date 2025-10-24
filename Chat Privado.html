@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -96,6 +95,7 @@ function criarMensagem(texto, tipo) {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
+// Ping para manter o servidor acordado
 async function verificarServidor() {
   try {
     const resposta = await fetch("https://c-rebro-do-zenvibes.onrender.com/ping");
@@ -106,8 +106,9 @@ async function verificarServidor() {
   }
 }
 
-setInterval(verificarServidor, 60000);
+// Verifica imediatamente e depois a cada 60s
 verificarServidor();
+setInterval(verificarServidor, 60000);
 
 async function enviarMensagem() {
   const mensagem = inputUsuario.value.trim();
@@ -123,7 +124,10 @@ async function enviarMensagem() {
       body: JSON.stringify({ message: mensagem })
     });
 
-    if (!resposta.ok) throw new Error("Erro na resposta do servidor");
+    if (!resposta.ok) {
+      const erroData = await resposta.json().catch(() => ({}));
+      throw new Error(erroData.error || "Erro na resposta do servidor");
+    }
 
     const data = await resposta.json();
     criarMensagem(data.reply || "Sem resposta da IA.", 'ia');
