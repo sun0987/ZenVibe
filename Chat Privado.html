@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -13,7 +14,6 @@
     flex-direction: column;
     background: linear-gradient(to bottom, #cce7ff, #e0ccff);
   }
-
   #chatContainer {
     flex: 1;
     display: flex;
@@ -22,7 +22,6 @@
     padding: 10px;
     overflow-y: auto;
   }
-
   .mensagem {
     max-width: 70%;
     padding: 10px 15px;
@@ -32,28 +31,24 @@
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     font-size: 0.95rem;
   }
-
   .usuario {
     align-self: flex-end;
     background: linear-gradient(135deg, #7a5cff, #8f9bff);
     color: white;
     border-bottom-right-radius: 0;
   }
-
   .ia {
     align-self: flex-start;
     background: #f0f0f0;
     color: #333;
     border-bottom-left-radius: 0;
   }
-
   #inputContainer {
     display: flex;
     padding: 10px;
     background: #ffffffdd;
     border-top: 1px solid #ccc;
   }
-
   #inputUsuario {
     flex: 1;
     padding: 12px 15px;
@@ -62,7 +57,6 @@
     outline: none;
     font-size: 1rem;
   }
-
   #enviarBtn {
     margin-left: 10px;
     padding: 12px 20px;
@@ -102,21 +96,16 @@ function criarMensagem(texto, tipo) {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-// PING para manter o servidor acordado
 async function verificarServidor() {
   try {
     const resposta = await fetch("https://c-rebro-do-zenvibes.onrender.com/ping");
-    if (resposta.ok) {
-      console.log("Servidor online ✅");
-    } else {
-      console.warn("Servidor respondeu com erro ⚠️");
-    }
+    if (resposta.ok) console.log("Servidor online ✅");
+    else console.warn("Servidor respondeu com erro ⚠️");
   } catch (erro) {
     console.error("Não foi possível conectar ao servidor ❌", erro);
   }
 }
 
-// Checa a cada 60 segundos
 setInterval(verificarServidor, 60000);
 verificarServidor();
 
@@ -131,7 +120,7 @@ async function enviarMensagem() {
     const resposta = await fetch("https://c-rebro-do-zenvibes.onrender.com/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: mensagem }) // bate com server.js
+      body: JSON.stringify({ message: mensagem })
     });
 
     if (!resposta.ok) throw new Error("Erro na resposta do servidor");
