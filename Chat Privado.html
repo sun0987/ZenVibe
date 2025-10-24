@@ -110,17 +110,16 @@
     inputUsuario.value = '';
 
     try {
-      const respostaFetch = await fetch("https://c-rebro-do-zenvibes.onrender.com/chat", {
+      const resposta = await fetch("https://c-rebro-do-zenvibes.onrender.com/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: mensagem })
       });
-
-      const data = await respostaFetch.json();
+      const data = await resposta.json();
       criarMensagem(data.reply, 'ia');
-    } catch (error) {
+    } catch (erro) {
       criarMensagem("Erro ao conectar com a IA.", 'ia');
-      console.error(error);
+      console.error(erro);
     }
   }
 
